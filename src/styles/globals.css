@@ -1,0 +1,98 @@
+@import '@fontsource/inter/400.css';
+@import '@fontsource/inter/500.css';
+@import '@fontsource/inter/600.css';
+@import '@fontsource/inter/700.css';
+
+@import '@fontsource/space-grotesk/400.css';
+@import '@fontsource/space-grotesk/500.css';
+@import '@fontsource/space-grotesk/600.css';
+@import '@fontsource/space-grotesk/700.css';
+
+@import 'tailwindcss';
+@theme {
+  --color-bg-primary: #1b3c53;
+
+  --color-bg-secondary: #234c6a;
+
+  --color-bg-tertiary: #456882;
+
+  --color-card: #352f44;
+
+  --color-text-primary: #d3dad9;
+
+  --color-text-secondary: #e0d9d9;
+
+  --color-text-highlight: #fff7eb;
+
+  --color-light-bg: #9aa6b2;
+
+  --color-light-card: #bcccdc;
+
+  --color-light-accent: #8d77ab;
+}
+
+@import './animations.css';
+@import './utilities.css';
+
+:root {
+  font-synthesis: none;
+
+  text-rendering: optimizeLegibility;
+
+  -webkit-font-smoothing: antialiased;
+
+  -moz-osx-font-smoothing: grayscale;
+
+  --font-heading: 'Space Grotesk', sans-serif;
+
+  --font-body: 'Inter', sans-serif;
+}
+
+* {
+  margin: 0;
+
+  padding: 0;
+
+  box-sizing: border-box;
+}
+
+html {
+  scroll-behavior: smooth;
+}
+
+body {
+  min-width: 320px;
+
+  min-height: 100vh;
+
+  font-family: var(--font-body);
+
+  overflow-x: hidden;
+}
+
+h1,
+h2,
+h3,
+h4,
+h5,
+h6 {
+  font-family: var(--font-heading);
+}
+
+img,
+canvas {
+  max-width: 100%;
+
+  display: block;
+}
+
+button,
+a {
+  cursor: pointer;
+}
+
+::selection {
+  background: rgba(69, 104, 130, 0.45);
+
+  color: #ffffff;
+}
