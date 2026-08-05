@@ -4,8 +4,6 @@ Project: Rafi Portfolio
 
 Version: 1.0
 
-Status: LOCKED
-
 ---
 
 # 1. Purpose

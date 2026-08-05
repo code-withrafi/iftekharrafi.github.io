@@ -9,6 +9,10 @@
 @import '@fontsource/space-grotesk/700.css';
 
 @import 'tailwindcss';
+
+@import './animations.css';
+@import './utilities.css';
+
 @theme {
   --color-bg-primary: #1b3c53;
 
@@ -29,23 +33,22 @@
   --color-light-card: #bcccdc;
 
   --color-light-accent: #8d77ab;
+
+  --font-heading: 'Space Grotesk', sans-serif;
+
+  --font-body: 'Inter', sans-serif;
 }
 
-@import './animations.css';
-@import './utilities.css';
-
 :root {
+  font-family: var(--font-body);
+
   font-synthesis: none;
 
   text-rendering: optimizeLegibility;
 
   -webkit-font-smoothing: antialiased;
 
-  -moz-osx-font-smoothing: grayscale;
-
-  --font-heading: 'Space Grotesk', sans-serif;
-
-  --font-body: 'Inter', sans-serif;
+  text-size-adjust: 100%;
 }
 
 * {
@@ -58,6 +61,8 @@
 
 html {
   scroll-behavior: smooth;
+
+  background: #0f3040;
 }
 
 body {
@@ -65,9 +70,11 @@ body {
 
   min-height: 100vh;
 
-  font-family: var(--font-body);
-
   overflow-x: hidden;
+
+  background: var(--color-bg-primary);
+
+  color: var(--color-text-primary);
 }
 
 h1,
@@ -79,11 +86,15 @@ h6 {
   font-family: var(--font-heading);
 }
 
+p {
+  font-family: var(--font-body);
+}
+
 img,
 canvas {
-  max-width: 100%;
-
   display: block;
+
+  max-width: 100%;
 }
 
 button,
@@ -91,8 +102,12 @@ a {
   cursor: pointer;
 }
 
+button {
+  font-family: inherit;
+}
+
 ::selection {
-  background: rgba(69, 104, 130, 0.45);
+  background: rgba(69, 169, 169, 0.45);
 
   color: #ffffff;
 }
