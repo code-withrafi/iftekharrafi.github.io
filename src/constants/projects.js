@@ -46,4 +46,16 @@ export const projects = [
     live: '',
     featured: true,
   },
+
+  {
+    id: 5,
+    title: 'Automatic Number Plate Recognition',
+    description:
+      'An end-to-end Automatic Number Plate Recognition (ANPR) system that detects vehicles and license plates, recognizes plate numbers using OCR, stores detection records, and provides a web dashboard for monitoring, searching, and analyzing results.',
+    images: ['anpr.png', 'anpr2.png', 'anpr3.png', 'anpr4.png'],
+    technologies: ['Python', 'FastAPI', 'YOLO', 'OpenCV', 'EasyOCR', 'PyTorch', 'MongoDB Atlas'],
+    github: 'https://github.com/code-withrafi/ANPR',
+    live: '',
+    featured: true,
+  },
 ];

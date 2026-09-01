@@ -25,6 +25,10 @@ const imageImports = {
   'emotionvision.png': () => import('@/assets/images/projects/emotionvision.png'),
   'emotionvision2.png': () => import('@/assets/images/projects/emotionvision2.png'),
   'emotionvision3.png': () => import('@/assets/images/projects/emotionvision3.png'),
+  'anpr.png': () => import('@/assets/images/projects/anpr.png'),
+  'anpr2.png': () => import('@/assets/images/projects/anpr2.png'),
+  'anpr3.png': () => import('@/assets/images/projects/anpr3.png'),
+  'anpr4.png': () => import('@/assets/images/projects/anpr4.png'),
 };
 
 // Memoized tech color function
@@ -58,6 +62,9 @@ function getProjectImages(title) {
   }
   if (titleLower.includes('emotion')) {
     return ['emotionvision.png', 'emotionvision2.png', 'emotionvision3.png'];
+  }
+  if (titleLower.includes('automatic') || titleLower.includes('anpr')) {
+    return ['anpr.png', 'anpr2.png', 'anpr3.png', 'anpr4.png'];
   }
 
   // Default fallback
