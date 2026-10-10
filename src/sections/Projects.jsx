@@ -11,32 +11,39 @@ import {
 import { projects } from '@/constants/projects';
 import SectionTitle from '@/components/common/SectionTitle';
 
-// Lazy load images only when needed
+// Lazy image imports: Vite resolves these paths at build time.
 const imageImports = {
   'skycast.png': () => import('@/assets/images/projects/skycast.png'),
   'skycast2.png': () => import('@/assets/images/projects/skycast2.png'),
   'skycast3.png': () => import('@/assets/images/projects/skycast3.png'),
   'skycast4.png': () => import('@/assets/images/projects/skycast4.png'),
+
   'medha-ai.png': () => import('@/assets/images/projects/medha-ai.png'),
   'medha-ai2.png': () => import('@/assets/images/projects/medha-ai2.png'),
+
   'portfolio.png': () => import('@/assets/images/projects/portfolio.png'),
   'portfolio2.png': () => import('@/assets/images/projects/portfolio2.png'),
   'portfolio3.png': () => import('@/assets/images/projects/portfolio3.png'),
+
   'emotionvision.png': () => import('@/assets/images/projects/emotionvision.png'),
   'emotionvision2.png': () => import('@/assets/images/projects/emotionvision2.png'),
   'emotionvision3.png': () => import('@/assets/images/projects/emotionvision3.png'),
+
   'anpr.png': () => import('@/assets/images/projects/anpr.png'),
   'anpr2.png': () => import('@/assets/images/projects/anpr2.png'),
   'anpr3.png': () => import('@/assets/images/projects/anpr3.png'),
   'anpr4.png': () => import('@/assets/images/projects/anpr4.png'),
+
   'disease_prediction_model_comparison.png': () =>
     import('@/assets/images/projects/disease_prediction_model_comparison.png'),
   'disease_prediction_threshold_analysis.png': () =>
     import('@/assets/images/projects/disease_prediction_threshold_analysis.png'),
+
   'handwriting_loss_curve.png': () => import('@/assets/images/projects/handwriting_loss_curve.png'),
   'handwriting_accuracy_curve.png': () =>
     import('@/assets/images/projects/handwriting_accuracy_curve.png'),
   'category_pass_rates.png': () => import('@/assets/images/projects/category_pass_rates.png'),
+
   'landing.png': () => import('@/assets/images/projects/landing.png'),
   'Flightresult.png': () => import('@/assets/images/projects/Flightresult.png'),
   '3flightdetails.png': () => import('@/assets/images/projects/3flightdetails.png'),
@@ -46,7 +53,6 @@ const imageImports = {
   '7bookingdetails.png': () => import('@/assets/images/projects/7bookingdetails.png'),
 };
 
-// Memoized tech color function
 const techColors = [
   '#45A9A9',
   '#98E8DE',
@@ -62,136 +68,129 @@ function getTechColor(index) {
   return techColors[index % techColors.length];
 }
 
-// Helper function to get project images based on title
-function getProjectImages(title) {
-  const titleLower = title.toLowerCase();
-
-  if (titleLower.includes('skycast')) {
-    return ['skycast.png', 'skycast2.png', 'skycast3.png', 'skycast4.png'];
-  }
-  if (titleLower.includes('medha')) {
-    return ['medha-ai.png', 'medha-ai2.png'];
-  }
-  if (titleLower.includes('portfolio') || titleLower.includes('rafi')) {
-    return ['portfolio.png', 'portfolio2.png', 'portfolio3.png'];
-  }
-  if (titleLower.includes('emotion')) {
-    return ['emotionvision.png', 'emotionvision2.png', 'emotionvision3.png'];
-  }
-  if (titleLower.includes('automatic') || titleLower.includes('anpr')) {
-    return ['anpr.png', 'anpr2.png', 'anpr3.png', 'anpr4.png'];
-  }
-  if (titleLower.includes('disease')) {
-    return ['disease_prediction_model_comparison.png', 'disease_prediction_threshold_analysis.png'];
-  }
-  if (titleLower.includes('handwriting')) {
-    return ['handwriting_loss_curve.png', 'handwriting_accuracy_curve.png'];
-  }
-  if (titleLower.includes('category')) {
-    return ['category_pass_rates.png'];
-  }
-  if (titleLower.includes('airline')) {
-    return [
-      'landing.png',
-      'Flightresult.png',
-      '3flightdetails.png',
-      '4seatselection.png',
-      '5mockpayment.png',
-      '6confirmation.png',
-      '7bookingdetails.png',
-    ];
+// Use the image filenames defined in the project data.
+function getProjectImages(project) {
+  if (!Array.isArray(project?.images)) {
+    return [];
   }
 
-  // Default fallback
-  return [];
+  return project.images.filter(
+    (imageName) => typeof imageName === 'string' && imageName.trim().length > 0,
+  );
 }
 
-// Optimized image carousel with lazy loading
+// Project image carousel
 function ProjectImageCarousel({ images, projectTitle }) {
   const [currentImage, setCurrentImage] = useState(0);
   const [loadedImages, setLoadedImages] = useState([]);
   const [isLoading, setIsLoading] = useState(true);
   const [loadError, setLoadError] = useState(false);
-  const carouselRef = useRef(null);
-  const isInView = useInView(carouselRef, { once: true, margin: '200px' });
 
-  // Load images only when carousel is about to be visible
+  const imageKey = useMemo(() => images.join('|'), [images]);
+
   useEffect(() => {
-    if (!isInView || !images || images.length === 0) return;
+    let cancelled = false;
 
-    const loadImages = async () => {
-      try {
-        const loaded = await Promise.all(
-          images.map(async (imageName) => {
-            if (imageImports[imageName]) {
-              try {
-                const module = await imageImports[imageName]();
-                return module.default;
-              } catch (err) {
-                console.warn(`Failed to load image: ${imageName}`, err);
-                return null;
-              }
-            }
-            console.warn(`No import found for: ${imageName}`);
-            return null;
-          }),
-        );
-        const filtered = loaded.filter(Boolean);
-        if (filtered.length === 0) {
-          setLoadError(true);
-        }
-        setLoadedImages(filtered);
+    async function loadImages() {
+      setIsLoading(true);
+      setLoadError(false);
+      setLoadedImages([]);
+      setCurrentImage(0);
+
+      if (!images?.length) {
         setIsLoading(false);
-      } catch (error) {
-        console.error('Failed to load images:', error);
         setLoadError(true);
-        setIsLoading(false);
+        return;
       }
-    };
 
-    loadImages();
-  }, [isInView, images]);
+      const results = await Promise.all(
+        images.map(async (imageName) => {
+          const importer = imageImports[imageName];
+
+          if (!importer) {
+            console.error(`No image import registered for "${imageName}"`);
+            return null;
+          }
+
+          try {
+            const module = await importer();
+            return module.default ?? null;
+          } catch (error) {
+            console.error(`Could not load "${imageName}" for "${projectTitle}"`, error);
+            return null;
+          }
+        }),
+      );
+
+      if (cancelled) return;
+
+      const validImages = results.filter(Boolean);
+
+      setLoadedImages(validImages);
+      setLoadError(validImages.length === 0);
+      setIsLoading(false);
+    }
+
+    loadImages().catch((error) => {
+      if (cancelled) return;
+
+      console.error(`Image loading failed for "${projectTitle}"`, error);
+      setLoadError(true);
+      setIsLoading(false);
+    });
+
+    return () => {
+      cancelled = true;
+    };
+  }, [imageKey, projectTitle, images]);
+
+  useEffect(() => {
+    if (currentImage >= loadedImages.length) {
+      setCurrentImage(0);
+    }
+  }, [currentImage, loadedImages.length]);
 
   const nextImage = useCallback(
-    (e) => {
-      e.preventDefault();
-      e.stopPropagation();
-      setCurrentImage((prev) => (prev + 1) % loadedImages.length);
+    (event) => {
+      event.preventDefault();
+      event.stopPropagation();
+
+      if (loadedImages.length > 1) {
+        setCurrentImage((previous) => (previous + 1) % loadedImages.length);
+      }
     },
     [loadedImages.length],
   );
 
   const prevImage = useCallback(
-    (e) => {
-      e.preventDefault();
-      e.stopPropagation();
-      setCurrentImage((prev) => (prev - 1 + loadedImages.length) % loadedImages.length);
+    (event) => {
+      event.preventDefault();
+      event.stopPropagation();
+
+      if (loadedImages.length > 1) {
+        setCurrentImage((previous) => (previous - 1 + loadedImages.length) % loadedImages.length);
+      }
     },
     [loadedImages.length],
   );
 
-  // Show folder icon if no images or error
-  if (!images || images.length === 0 || loadError || (loadedImages.length === 0 && !isLoading)) {
+  if (loadError && !isLoading) {
     return (
-      <div className="flex h-full w-full items-center justify-center bg-gradient-to-br from-[#45A9A9]/5 to-[#98E8DE]/5">
-        <FiFolder className="h-12 w-12 text-[#45A9A9]/20" />
+      <div className="flex h-full w-full flex-col items-center justify-center gap-2 bg-gradient-to-br from-[#45A9A9]/5 to-[#98E8DE]/5">
+        <FiFolder className="h-12 w-12 text-[#45A9A9]/40" />
+        <span className="text-xs text-white/40">Image unavailable</span>
       </div>
     );
   }
 
   return (
-    <div
-      ref={carouselRef}
-      className="group/image relative h-full w-full overflow-hidden bg-gradient-to-br from-[#45A9A9]/5 to-[#98E8DE]/5"
-    >
-      {/* Loading skeleton */}
+    <div className="group/image relative h-full w-full overflow-hidden bg-gradient-to-br from-[#45A9A9]/5 to-[#98E8DE]/5">
       {isLoading && <div className="absolute inset-0 animate-pulse bg-white/5" />}
 
-      {/* Images */}
-      {loadedImages.length > 0 && (
+      {!isLoading && loadedImages.length > 0 && (
         <AnimatePresence mode="wait">
           <motion.img
-            key={currentImage}
+            key={loadedImages[currentImage]}
             src={loadedImages[currentImage]}
             alt={`${projectTitle} screenshot ${currentImage + 1}`}
             initial={{ opacity: 0 }}
@@ -199,43 +198,44 @@ function ProjectImageCarousel({ images, projectTitle }) {
             exit={{ opacity: 0 }}
             transition={{ duration: 0.2 }}
             className="h-full w-full object-cover object-top"
-            loading="lazy"
           />
         </AnimatePresence>
       )}
 
-      {/* Navigation arrows - only show if multiple images */}
       {loadedImages.length > 1 && (
         <>
           <button
+            type="button"
             onClick={prevImage}
-            className="absolute top-1/2 left-3 -translate-y-1/2 rounded-full bg-black/50 p-2 text-white/70 opacity-0 backdrop-blur-sm transition-all duration-300 group-hover/image:opacity-100 hover:bg-black/70 hover:text-white"
             aria-label="Previous image"
+            className="absolute top-1/2 left-3 -translate-y-1/2 rounded-full bg-black/50 p-2 text-white/70 opacity-0 backdrop-blur-sm transition-all duration-300 group-hover/image:opacity-100 hover:bg-black/70 hover:text-white"
           >
             <FiChevronLeft className="h-4 w-4" />
           </button>
+
           <button
+            type="button"
             onClick={nextImage}
-            className="absolute top-1/2 right-3 -translate-y-1/2 rounded-full bg-black/50 p-2 text-white/70 opacity-0 backdrop-blur-sm transition-all duration-300 group-hover/image:opacity-100 hover:bg-black/70 hover:text-white"
             aria-label="Next image"
+            className="absolute top-1/2 right-3 -translate-y-1/2 rounded-full bg-black/50 p-2 text-white/70 opacity-0 backdrop-blur-sm transition-all duration-300 group-hover/image:opacity-100 hover:bg-black/70 hover:text-white"
           >
             <FiChevronRight className="h-4 w-4" />
           </button>
 
-          {/* Dots indicator */}
           <div className="absolute bottom-3 left-1/2 flex -translate-x-1/2 gap-1.5">
-            {loadedImages.map((_, index) => (
+            {loadedImages.map((image, index) => (
               <button
-                key={index}
-                onClick={(e) => {
-                  e.preventDefault();
-                  e.stopPropagation();
+                key={image}
+                type="button"
+                onClick={(event) => {
+                  event.preventDefault();
+                  event.stopPropagation();
                   setCurrentImage(index);
                 }}
+                aria-label={`Go to image ${index + 1}`}
                 className={`h-1.5 w-1.5 rounded-full transition-all duration-300 ${
                   index === currentImage ? 'w-4 bg-[#45A9A9]' : 'bg-white/50 hover:bg-white/80'
                 }`}
-                aria-label={`Go to image ${index + 1}`}
               />
             ))}
           </div>
@@ -245,7 +245,7 @@ function ProjectImageCarousel({ images, projectTitle }) {
   );
 }
 
-// Optimized Tech Badge
+// Technology badge
 const TechBadge = ({ tech, index }) => (
   <span
     className="rounded-full border px-2.5 py-1 text-xs font-medium"
@@ -259,13 +259,12 @@ const TechBadge = ({ tech, index }) => (
   </span>
 );
 
-// Featured project card - OPTIMIZED
+// Featured project card
 function FeaturedCard({ project, index }) {
   const ref = useRef(null);
   const isInView = useInView(ref, { once: true, margin: '-100px' });
 
-  // Get project images using helper function
-  const projectImageNames = useMemo(() => getProjectImages(project.title), [project.title]);
+  const projectImageNames = useMemo(() => getProjectImages(project), [project]);
 
   return (
     <motion.div
@@ -276,14 +275,11 @@ function FeaturedCard({ project, index }) {
       className="group relative col-span-full"
     >
       <div className="relative grid items-center gap-8 rounded-3xl border border-white/5 bg-white/[0.02] p-6 backdrop-blur-sm transition-all duration-300 group-hover:border-[#45A9A9]/20 sm:p-8 lg:grid-cols-2 lg:gap-12 lg:p-10">
-        {/* Project Image */}
         <div className="relative aspect-video overflow-hidden rounded-2xl">
           <ProjectImageCarousel images={projectImageNames} projectTitle={project.title} />
         </div>
 
-        {/* Project Info */}
         <div className="space-y-5">
-          {/* Featured badge */}
           <motion.div
             initial={{ opacity: 0, x: -20 }}
             animate={isInView ? { opacity: 1, x: 0 } : {}}
@@ -296,22 +292,18 @@ function FeaturedCard({ project, index }) {
             </span>
           </motion.div>
 
-          {/* Title */}
           <h3 className="text-3xl font-bold text-white transition-colors duration-300 group-hover:text-[#45A9A9] sm:text-4xl">
             {project.title}
           </h3>
 
-          {/* Description */}
           <p className="leading-relaxed text-white/60">{project.description}</p>
 
-          {/* Tech Stack */}
           <div className="flex flex-wrap gap-2">
             {project.technologies?.map((tech, techIndex) => (
               <TechBadge key={tech} tech={tech} index={techIndex} />
             ))}
           </div>
 
-          {/* Links */}
           <div className="flex items-center gap-4 pt-2">
             {project.github && (
               <a
@@ -325,6 +317,7 @@ function FeaturedCard({ project, index }) {
                 <FiChevronRight className="h-3 w-3 transition-transform group-hover/link:translate-x-1" />
               </a>
             )}
+
             {project.live && (
               <a
                 href={project.live}
@@ -344,13 +337,12 @@ function FeaturedCard({ project, index }) {
   );
 }
 
-// Standard project card - OPTIMIZED
+// Standard project card
 function ProjectCard({ project, index }) {
   const ref = useRef(null);
   const isInView = useInView(ref, { once: true, margin: '-100px' });
 
-  // Get project images using helper function
-  const projectImageNames = useMemo(() => getProjectImages(project.title), [project.title]);
+  const projectImageNames = useMemo(() => getProjectImages(project), [project]);
 
   return (
     <motion.div
@@ -361,12 +353,10 @@ function ProjectCard({ project, index }) {
       className="group relative"
     >
       <div className="relative h-full rounded-3xl border border-white/5 bg-white/[0.02] p-6 backdrop-blur-sm transition-all duration-300 group-hover:-translate-y-1 group-hover:border-[#45A9A9]/20 sm:p-8">
-        {/* Project Image */}
         <div className="mb-5 aspect-video overflow-hidden rounded-2xl">
           <ProjectImageCarousel images={projectImageNames} projectTitle={project.title} />
         </div>
 
-        {/* Card header */}
         <div className="mb-3 flex items-start justify-between">
           <div className="flex h-10 w-10 items-center justify-center rounded-2xl bg-gradient-to-br from-[#45A9A9]/20 to-[#98E8DE]/20">
             <FiFolder className="h-5 w-5 text-[#45A9A9]" />
@@ -378,16 +368,19 @@ function ProjectCard({ project, index }) {
                 href={project.github}
                 target="_blank"
                 rel="noopener noreferrer"
+                aria-label={`View ${project.title} source code`}
                 className="flex h-9 w-9 items-center justify-center rounded-full border border-white/10 text-white/40 transition-all duration-300 hover:border-[#45A9A9]/30 hover:text-[#45A9A9]"
               >
                 <FiGithub className="h-3.5 w-3.5" />
               </a>
             )}
+
             {project.live && (
               <a
                 href={project.live}
                 target="_blank"
                 rel="noopener noreferrer"
+                aria-label={`Open ${project.title} live demo`}
                 className="flex h-9 w-9 items-center justify-center rounded-full border border-white/10 text-white/40 transition-all duration-300 hover:border-[#45A9A9]/30 hover:text-[#45A9A9]"
               >
                 <FiExternalLink className="h-3.5 w-3.5" />
@@ -396,17 +389,14 @@ function ProjectCard({ project, index }) {
           </div>
         </div>
 
-        {/* Title */}
         <h3 className="mb-2 text-lg font-bold text-white transition-colors duration-300 group-hover:text-[#45A9A9] sm:text-xl">
           {project.title}
         </h3>
 
-        {/* Description */}
         <p className="mb-4 line-clamp-2 text-sm leading-relaxed text-white/50">
           {project.description}
         </p>
 
-        {/* Tech Stack */}
         <div className="mt-auto flex flex-wrap gap-1.5">
           {project.technologies?.slice(0, 3).map((tech, techIndex) => (
             <span
@@ -420,6 +410,7 @@ function ProjectCard({ project, index }) {
               {tech}
             </span>
           ))}
+
           {project.technologies?.length > 3 && (
             <span className="rounded-full bg-white/5 px-2 py-0.5 text-xs font-medium text-white/40">
               +{project.technologies.length - 3}
@@ -431,12 +422,13 @@ function ProjectCard({ project, index }) {
   );
 }
 
-// Filter tabs - OPTIMIZED
+// Filter tabs
 const FilterTabs = ({ categories, activeFilter, onFilterChange }) => (
   <div className="mb-10 flex flex-wrap justify-center gap-2">
     {categories.map((category) => (
       <button
         key={category}
+        type="button"
         onClick={() => onFilterChange(category)}
         className={`rounded-full px-4 py-2 text-sm font-medium transition-all duration-200 ${
           activeFilter === category
@@ -453,29 +445,28 @@ const FilterTabs = ({ categories, activeFilter, onFilterChange }) => (
 export default function Projects() {
   const [activeFilter, setActiveFilter] = useState('All');
 
-  // Extract unique tech categories - MEMOIZED
   const allTech = useMemo(() => {
     const techSet = new Set();
+
     projects.forEach((project) => {
       project.technologies?.forEach((tech) => techSet.add(tech));
     });
+
     return ['All', ...Array.from(techSet)];
   }, []);
 
-  // Filter projects - MEMOIZED
   const filteredProjects = useMemo(() => {
     if (activeFilter === 'All') return projects;
+
     return projects.filter((project) => project.technologies?.includes(activeFilter));
   }, [activeFilter]);
 
-  // Separate featured project
   const featuredProject = filteredProjects[0];
   const remainingProjects = useMemo(() => filteredProjects.slice(1), [filteredProjects]);
 
   return (
     <section id="projects" className="relative overflow-hidden py-16 sm:py-20">
       <div className="relative z-10 mx-auto max-w-7xl px-6 sm:px-8 lg:px-12">
-        {/* Section Title */}
         <SectionTitle
           subtitle="Projects"
           title="Things I've Built"
@@ -484,19 +475,15 @@ export default function Projects() {
           variant="brackets"
         />
 
-        {/* Filter Tabs */}
         <FilterTabs
           categories={allTech}
           activeFilter={activeFilter}
           onFilterChange={setActiveFilter}
         />
 
-        {/* Projects Display */}
         <div className="space-y-6">
-          {/* Featured Project */}
           {featuredProject && <FeaturedCard project={featuredProject} index={0} />}
 
-          {/* Remaining Projects Grid */}
           <div className="grid gap-6 sm:gap-8 md:grid-cols-2">
             {remainingProjects.map((project, index) => (
               <ProjectCard key={project.id || project.title} project={project} index={index + 1} />
@@ -504,7 +491,6 @@ export default function Projects() {
           </div>
         </div>
 
-        {/* Empty state */}
         {filteredProjects.length === 0 && (
           <div className="py-20 text-center">
             <FiFolder className="mx-auto mb-4 h-16 w-16 text-white/10" />

@@ -15,7 +15,7 @@ Showcasing my software engineering journey, projects, skills, and experience thr
 
 ## Live Demo
 
-> **Website:** _(Add after deployment)_
+> **Website:**
 
 ```
 https://portfolio-coral-two-g6bednee2s.vercel.app/
@@ -196,6 +196,7 @@ Technologies used:
 - Tailwind CSS
 - Vite
 
+## And Many More
 ---
 
 # Getting Started
@@ -307,7 +308,7 @@ It helps others discover the project and motivates future improvements.
 
 ---
 
-# 👨 Author
+# Author
 
 ## Iftekhar Ibne Masud Rafi
 
