@@ -29,6 +29,20 @@ const imageImports = {
   'anpr2.png': () => import('@/assets/images/projects/anpr2.png'),
   'anpr3.png': () => import('@/assets/images/projects/anpr3.png'),
   'anpr4.png': () => import('@/assets/images/projects/anpr4.png'),
+  'disease_prediction_model_comparison.png': () =>
+    import('@/assets/images/projects/disease_prediction_model_comparison.png'),
+  'disease_prediction_threshold_analysis.png': () =>
+    import('@/assets/images/projects/disease_prediction_threshold_analysis.png'),
+  'handwriting_loss_curve.png': () => import('@/assets/images/projects/handwriting_loss_curve.png'),
+  'handwriting_accuracy_curve.png': () => import('@/assets/images/projects/handwriting_accuracy_curve.png'),
+  'category_pass_rates.png': () => import('@/assets/images/projects/category_pass_rates.png'),
+  'landing.png': () => import('@/assets/images/projects/landing.png'),
+  'Flightresult.png': () => import('@/assets/images/projects/Flightresult.png'),
+  '3flightdetails.png': () => import('@/assets/images/projects/3flightdetails.png'),
+  '4seatselection.png': () => import('@/assets/images/projects/4seatselection.png'),
+  '5mockpayment.png': () => import('@/assets/images/projects/5mockpayment.png'),
+  '6confirmation.png': () => import('@/assets/images/projects/6confirmation.png'),
+  '7bookingdetails.png': () => import('@/assets/images/projects/7bookingdetails.png'),
 };
 
 // Memoized tech color function
@@ -65,6 +79,25 @@ function getProjectImages(title) {
   }
   if (titleLower.includes('automatic') || titleLower.includes('anpr')) {
     return ['anpr.png', 'anpr2.png', 'anpr3.png', 'anpr4.png'];
+  }
+  if (titleLower.includes('disease')) {
+    return ['disease_prediction_model_comparison.png', 'disease_prediction_threshold_analysis.png'];
+  }
+  if (titleLower.includes('handwriting')) {
+    return ['handwriting_loss_curve.png', 'handwriting_accuracy_curve.png'];
+  }
+  if (titleLower.includes('category')) {
+    return ['category_pass_rates.png'];
+  }
+  if (titleLower.includes('airline')) {
+    return [
+      'landing.png',
+      'Flightresult.png',
+      '3flightdetails.png',
+      '4seatselection.png',
+      '5mockpayment.png',
+      '6confirmation.png',
+      '7bookingdetails.png'];
   }
 
   // Default fallback

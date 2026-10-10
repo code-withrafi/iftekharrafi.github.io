@@ -1,8 +1,7 @@
 import { forwardRef } from 'react';
 import { motion } from 'framer-motion';
 
-// Size variants for different container widths
-const sizeClasses = {
+const SIZE = {
   sm: 'max-w-3xl',
   md: 'max-w-5xl',
   lg: 'max-w-7xl',
@@ -11,117 +10,151 @@ const sizeClasses = {
   narrow: 'max-w-2xl',
 };
 
-// Padding variants for different spacing needs
-const paddingClasses = {
+const PADDING = {
   none: 'px-0',
   sm: 'px-4 sm:px-6 lg:px-8',
   md: 'px-6 sm:px-8 lg:px-12',
   lg: 'px-8 sm:px-12 lg:px-16',
 };
 
-const Container = forwardRef(
-  (
-    {
-      children,
-      className = '',
-      size = 'lg',
-      padding = 'md',
-      as: Component = 'div',
-      animated = false,
-      animationVariant = 'fadeUp',
-      noGutter = false,
-      centered = false,
-      id,
-      role,
-      ariaLabel,
-      ...props
-    },
-    ref,
-  ) => {
-    // Animation variants
-    const animations = {
-      fadeUp: {
-        initial: { opacity: 0, y: 40 },
-        animate: { opacity: 1, y: 0 },
-        transition: { duration: 0.6, ease: 'easeOut' },
-      },
-      fadeIn: {
-        initial: { opacity: 0 },
-        animate: { opacity: 1 },
-        transition: { duration: 0.5, ease: 'easeOut' },
-      },
-      slideLeft: {
-        initial: { opacity: 0, x: -40 },
-        animate: { opacity: 1, x: 0 },
-        transition: { duration: 0.6, ease: 'easeOut' },
-      },
-      slideRight: {
-        initial: { opacity: 0, x: 40 },
-        animate: { opacity: 1, x: 0 },
-        transition: { duration: 0.6, ease: 'easeOut' },
-      },
-      scale: {
-        initial: { opacity: 0, scale: 0.95 },
-        animate: { opacity: 1, scale: 1 },
-        transition: { duration: 0.5, ease: 'easeOut' },
-      },
-      none: {},
-    };
+const ANIMATIONS = {
+  fadeUp: {
+    initial: { opacity: 0, y: 40 },
+    animate: { opacity: 1, y: 0 },
+    transition: { duration: 0.6, ease: 'easeOut' },
+  },
+  fadeIn: {
+    initial: { opacity: 0 },
+    animate: { opacity: 1 },
+    transition: { duration: 0.5, ease: 'easeOut' },
+  },
+  slideLeft: {
+    initial: { opacity: 0, x: -40 },
+    animate: { opacity: 1, x: 0 },
+    transition: { duration: 0.6, ease: 'easeOut' },
+  },
+  slideRight: {
+    initial: { opacity: 0, x: 40 },
+    animate: { opacity: 1, x: 0 },
+    transition: { duration: 0.6, ease: 'easeOut' },
+  },
+  scale: {
+    initial: { opacity: 0, scale: 0.95 },
+    animate: { opacity: 1, scale: 1 },
+    transition: { duration: 0.5, ease: 'easeOut' },
+  },
+  none: {},
+};
 
-    const selectedAnimation = animations[animationVariant] || animations.fadeUp;
+const GRID_COLS = {
+  1: 'grid-cols-1',
+  2: 'grid-cols-1 md:grid-cols-2',
+  3: 'grid-cols-1 md:grid-cols-2 lg:grid-cols-3',
+  4: 'grid-cols-1 sm:grid-cols-2 lg:grid-cols-4',
+  5: 'grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-5',
+  6: 'grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-6',
+};
 
-    // Build class names
-    const containerClasses = [
-      'mx-auto w-full',
-      sizeClasses[size] || sizeClasses.lg,
-      !noGutter && (paddingClasses[padding] || paddingClasses.md),
-      centered && 'flex flex-col items-center text-center',
-      className,
-    ]
-      .filter(Boolean)
-      .join(' ');
+const GAPS = {
+  none: 'gap-0',
+  sm: 'gap-4',
+  md: 'gap-6 lg:gap-8',
+  lg: 'gap-8 lg:gap-12',
+  xl: 'gap-12 lg:gap-16',
+};
 
-    // If animated, use motion component
-    if (animated) {
-      const MotionComponent = motion[Component] || motion.div;
+const FLEX_DIRECTION = {
+  row: 'flex-row',
+  col: 'flex-col',
+  'row-reverse': 'flex-row-reverse',
+  'col-reverse': 'flex-col-reverse',
+};
 
-      return (
-        <MotionComponent
-          ref={ref}
-          className={containerClasses}
-          initial={selectedAnimation.initial}
-          animate={selectedAnimation.animate}
-          transition={selectedAnimation.transition}
-          viewport={animationVariant !== 'none' ? { once: true, margin: '-50px' } : undefined}
-          id={id}
-          role={role}
-          aria-label={ariaLabel}
-          {...props}
-        >
-          {children}
-        </MotionComponent>
-      );
-    }
+const ALIGN = {
+  start: 'items-start',
+  center: 'items-center',
+  end: 'items-end',
+  stretch: 'items-stretch',
+  baseline: 'items-baseline',
+};
 
-    // Static container
+const JUSTIFY = {
+  start: 'justify-start',
+  center: 'justify-center',
+  end: 'justify-end',
+  between: 'justify-between',
+  around: 'justify-around',
+  evenly: 'justify-evenly',
+};
+
+const FLEX_GAPS = {
+  none: 'gap-0',
+  sm: 'gap-2 sm:gap-4',
+  md: 'gap-4 sm:gap-6',
+  lg: 'gap-6 sm:gap-8 lg:gap-10',
+  xl: 'gap-8 sm:gap-12 lg:gap-16',
+};
+
+const cn = (...classes) => classes.filter(Boolean).join(' ');
+
+const Container = forwardRef(function Container(
+  {
+    children,
+    className = '',
+    size = 'lg',
+    padding = 'md',
+    as: Component = 'div',
+    animated = false,
+    animationVariant = 'fadeUp',
+    noGutter = false,
+    centered = false,
+    id,
+    role,
+    ariaLabel,
+    ...props
+  },
+  ref,
+) {
+  const animation = ANIMATIONS[animationVariant] || ANIMATIONS.fadeUp;
+
+  const classes = cn(
+    'mx-auto w-full',
+    SIZE[size] || SIZE.lg,
+    !noGutter && (PADDING[padding] || PADDING.md),
+    centered && 'flex flex-col items-center text-center',
+    className,
+  );
+
+  if (animated) {
+    const MotionComponent = motion[Component] || motion.div;
+
     return (
-      <Component
+      <MotionComponent
         ref={ref}
-        className={containerClasses}
+        className={classes}
+        initial={animation.initial}
+        animate={animation.animate}
+        transition={animation.transition}
+        viewport={animationVariant !== 'none' ? { once: true, margin: '-50px' } : undefined}
         id={id}
         role={role}
         aria-label={ariaLabel}
         {...props}
       >
         {children}
-      </Component>
+      </MotionComponent>
     );
-  },
-);
+  }
+
+  return (
+    <Component ref={ref} className={classes} id={id} role={role} aria-label={ariaLabel} {...props}>
+      {children}
+    </Component>
+  );
+});
 
 Container.displayName = 'Container';
 
-// Section container with semantic HTML
 export function Section({
   children,
   className = '',
@@ -129,7 +162,7 @@ export function Section({
   spacing = 'lg',
   ...props
 }) {
-  const backgroundClasses = {
+  const backgrounds = {
     default: '',
     muted: 'bg-gray-50/50 dark:bg-gray-900/50',
     accent: 'bg-[#45A9A9]/5 dark:bg-[#45A9A9]/10',
@@ -137,7 +170,7 @@ export function Section({
     dark: 'bg-gray-900 dark:bg-black',
   };
 
-  const spacingClasses = {
+  const spacingMap = {
     none: 'py-0',
     sm: 'py-8 sm:py-12',
     md: 'py-12 sm:py-16',
@@ -147,7 +180,7 @@ export function Section({
 
   return (
     <section
-      className={`${spacingClasses[spacing]} ${backgroundClasses[background]} ${className}`}
+      className={cn(spacingMap[spacing] || spacingMap.lg, backgrounds[background], className)}
       {...props}
     >
       {children}
@@ -155,33 +188,17 @@ export function Section({
   );
 }
 
-// Grid container for common layouts
 export function Grid({ children, className = '', cols = 3, gap = 'md', ...props }) {
-  const colsClasses = {
-    1: 'grid-cols-1',
-    2: 'grid-cols-1 md:grid-cols-2',
-    3: 'grid-cols-1 md:grid-cols-2 lg:grid-cols-3',
-    4: 'grid-cols-1 sm:grid-cols-2 lg:grid-cols-4',
-    5: 'grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-5',
-    6: 'grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-6',
-  };
-
-  const gapClasses = {
-    none: 'gap-0',
-    sm: 'gap-4',
-    md: 'gap-6 lg:gap-8',
-    lg: 'gap-8 lg:gap-12',
-    xl: 'gap-12 lg:gap-16',
-  };
-
   return (
-    <div className={`grid ${colsClasses[cols]} ${gapClasses[gap]} ${className}`} {...props}>
+    <div
+      className={cn('grid', GRID_COLS[cols] || GRID_COLS[3], GAPS[gap] || GAPS.md, className)}
+      {...props}
+    >
       {children}
     </div>
   );
 }
 
-// Flex container for common layouts
 export function Flex({
   children,
   className = '',
@@ -192,41 +209,17 @@ export function Flex({
   gap = 'md',
   ...props
 }) {
-  const directionClasses = {
-    row: 'flex-row',
-    col: 'flex-col',
-    'row-reverse': 'flex-row-reverse',
-    'col-reverse': 'flex-col-reverse',
-  };
-
-  const alignClasses = {
-    start: 'items-start',
-    center: 'items-center',
-    end: 'items-end',
-    stretch: 'items-stretch',
-    baseline: 'items-baseline',
-  };
-
-  const justifyClasses = {
-    start: 'justify-start',
-    center: 'justify-center',
-    end: 'justify-end',
-    between: 'justify-between',
-    around: 'justify-around',
-    evenly: 'justify-evenly',
-  };
-
-  const gapClasses = {
-    none: 'gap-0',
-    sm: 'gap-2 sm:gap-4',
-    md: 'gap-4 sm:gap-6',
-    lg: 'gap-6 sm:gap-8 lg:gap-10',
-    xl: 'gap-8 sm:gap-12 lg:gap-16',
-  };
-
   return (
     <div
-      className={`flex ${directionClasses[direction]} ${alignClasses[align]} ${justifyClasses[justify]} ${wrap ? 'flex-wrap' : ''} ${gapClasses[gap]} ${className}`}
+      className={cn(
+        'flex',
+        FLEX_DIRECTION[direction] || FLEX_DIRECTION.row,
+        ALIGN[align] || ALIGN.center,
+        JUSTIFY[justify] || JUSTIFY.between,
+        wrap && 'flex-wrap',
+        FLEX_GAPS[gap] || FLEX_GAPS.md,
+        className,
+      )}
       {...props}
     >
       {children}

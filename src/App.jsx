@@ -16,32 +16,38 @@ export default function App() {
 
   return (
     <MainLayout>
-      <div className="relative min-h-screen">
-        {/* 3D Background */}
+      {/* 3D Background */}
+      <div className="fixed inset-0 -z-20 h-screen w-screen">
+        <Scene />
+      </div>
 
-        <div className="fixed inset-0 -z-20">
-          <Scene />
+      {/* Dark Overlay */}
+      <div className="fixed inset-0 -z-10 h-screen w-screen bg-[#06151D]/75" />
+
+      {/* Page Content */}
+      <div className="relative z-10 flex w-full flex-col items-center">
+        {/* Hero Section - independently aligned */}
+        <div className="w-full -translate-x-3 sm:-translate-x-4 lg:-translate-x-6">
+          <Hero />
         </div>
 
-        {/* Dark Overlay */}
+        {/* About Section - original alignment */}
+        <About />
 
-        <div className="fixed inset-0 -z-10 bg-[#06151D]/75" />
+        {/* Skills Section - original alignment */}
+        <Skills />
 
-        {/* Content */}
+        {/* Projects Section - original alignment */}
+        <Projects />
 
-        <div className="relative z-10">
-          <Hero />
+        {/* Experience Section - original alignment */}
+        <Experience />
 
-          <About />
+        {/* Education Section - original alignment */}
+        <Education />
 
-          <Skills />
-
-          <Projects />
-
-          <Experience />
-
-          <Education />
-
+        {/* Contact Section - independently aligned */}
+        <div className="w-full">
           <Contact />
         </div>
       </div>

@@ -3,16 +3,10 @@ import Footer from '@/components/layout/Footer';
 
 export default function MainLayout({ children }) {
   return (
-    <div className="relative min-h-screen overflow-x-hidden text-[#0F3040]">
-      {/* Navigation */}
-
+    <div className="relative min-h-screen w-full overflow-x-hidden text-[#0F3040]">
       <Navbar />
 
-      {/* Page Content */}
-
-      <main className="relative z-10">{children}</main>
-
-      {/* Footer */}
+      <main className="relative z-10 w-full">{children}</main>
 
       <Footer />
     </div>

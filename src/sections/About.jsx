@@ -195,8 +195,9 @@ export default function About() {
                 className="leading-relaxed text-white/60"
               >
                 I'm a passionate Software Engineering student with a deep fascination for Artificial
-                Intelligence and Full Stack Development. I love building intelligent, scalable
-                applications that solve real-world problems and create meaningful impact.
+                Intelligence, Machine Learning,NLP, Computer Vision and Full Stack Development. I
+                love building intelligent, scalable applications that solve real-world problems and
+                create meaningful impact.
               </motion.p>
 
               <motion.p

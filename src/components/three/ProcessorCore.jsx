@@ -1,9 +1,8 @@
 import { Float, Edges } from '@react-three/drei';
 import { useFrame } from '@react-three/fiber';
-import { useRef, useMemo } from 'react';
+import { useMemo, useRef } from 'react';
 import * as THREE from 'three';
 
-// Configuration constants
 const CONFIG = {
   baseDimensions: [2, 0.35, 2],
   chipDimensions: [1.5, 0.15, 1.5],
@@ -21,6 +20,12 @@ const CONFIG = {
   roughness: 0.2,
 };
 
+const ROTATION_STEP = 0.016;
+const PULSE_SPEED = 2;
+const PULSE_AMOUNT = 0.3;
+const GLOW_SCALE_SPEED = 1.5;
+const GLOW_SCALE_AMOUNT = 0.02;
+
 export default function ProcessorCore({
   rotationSpeed = CONFIG.rotationSpeed,
   floatSpeed = CONFIG.floatSpeed,
@@ -31,61 +36,49 @@ export default function ProcessorCore({
   const core = useRef();
   const glowMesh = useRef();
 
-  // Memoized geometries
   const baseGeometry = useMemo(() => new THREE.BoxGeometry(...CONFIG.baseDimensions), []);
+
   const chipGeometry = useMemo(() => new THREE.BoxGeometry(...CONFIG.chipDimensions), []);
+
   const pinGeometry = useMemo(
     () => new THREE.CylinderGeometry(CONFIG.pinRadius, CONFIG.pinRadius, CONFIG.pinHeight, 16),
     [],
   );
 
-  // Generate pin positions
   const pins = useMemo(() => {
     const positions = [];
+    const halfSize = CONFIG.baseDimensions[0] / 2;
     const spacing = CONFIG.baseDimensions[0] / (CONFIG.pinCount + 1);
 
     for (let i = 0; i < CONFIG.pinCount; i++) {
-      // Bottom pins
-      positions.push([
-        -CONFIG.baseDimensions[0] / 2 + spacing * (i + 1),
-        -0.25,
-        -CONFIG.baseDimensions[2] / 2,
-      ]);
-      positions.push([
-        -CONFIG.baseDimensions[0] / 2 + spacing * (i + 1),
-        -0.25,
-        CONFIG.baseDimensions[2] / 2,
-      ]);
-    }
+      const offset = -halfSize + spacing * (i + 1);
 
-    for (let i = 0; i < CONFIG.pinCount; i++) {
-      // Side pins
-      positions.push([
-        -CONFIG.baseDimensions[0] / 2,
-        -0.25,
-        -CONFIG.baseDimensions[2] / 2 + spacing * (i + 1),
-      ]);
-      positions.push([
-        CONFIG.baseDimensions[0] / 2,
-        -0.25,
-        -CONFIG.baseDimensions[2] / 2 + spacing * (i + 1),
-      ]);
+      positions.push(
+        [offset, -0.25, -halfSize],
+        [offset, -0.25, halfSize],
+        [-halfSize, -0.25, offset],
+        [halfSize, -0.25, offset],
+      );
     }
 
     return positions;
   }, []);
 
   useFrame(({ clock }) => {
-    const t = clock.getElapsedTime();
+    const coreObject = core.current;
 
-    // Smooth rotation
-    core.current.rotation.y += rotationSpeed * 0.016; // Delta-time based rotation
+    if (coreObject) {
+      coreObject.rotation.y += rotationSpeed * ROTATION_STEP;
+    }
 
-    // Pulsing glow effect
-    if (glowMesh.current) {
-      const pulse = Math.sin(t * 2) * 0.3 + 0.7;
-      glowMesh.current.material.emissiveIntensity = 2 + pulse;
-      glowMesh.current.scale.setScalar(1 + Math.sin(t * 1.5) * 0.02);
+    const glowObject = glowMesh.current;
+
+    if (glowObject) {
+      const time = clock.getElapsedTime();
+      const pulse = Math.sin(time * PULSE_SPEED) * PULSE_AMOUNT + 0.7;
+
+      glowObject.material.emissiveIntensity = 2 + pulse;
+      glowObject.scale.setScalar(1 + Math.sin(time * GLOW_SCALE_SPEED) * GLOW_SCALE_AMOUNT);
     }
   });
 

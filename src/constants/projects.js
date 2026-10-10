@@ -58,4 +58,71 @@ export const projects = [
     live: '',
     featured: true,
   },
+
+  {
+    id: 6,
+    title: 'Disease Prediction from Medical Data',
+    description:
+      'Machine learning project for predicting heart disease from clinical data,using the UCI Heart Disease dataset.. It compares three classifiers and applies threshold optimization to prioritize reducing false negatives.',
+    images: [
+      'disease_prediction_model_comparison.png',
+      'disease_prediction_threshold_analysis.png',
+    ],
+    technologies: ['Python'],
+    github: 'https://github.com/code-withrafi/disease-prediction',
+    live: '',
+    featured: true,
+  },
+
+  {
+    id: 7,
+    title: 'Handwritten Character Recognition',
+    description:
+      'A machine learning project for recognizing handwritten digits from the MNIST dataset using Logistic Regression and Convolutional Neural Networks (CNNs).This project compares a traditional machine learning baseline with CNN architectures and evaluates accuracy, training behavior, classification errors, and inference speed.',
+    images: ['handwriting_loss_curve.png', 'handwriting_accuracy_curve.png'],
+    technologies: ['Python'],
+    github: 'https://github.com/code-withrafi/handwritten-character-recognition',
+    live: '',
+    featured: true,
+  },
+
+  {
+    id: 8,
+    title: 'Language Model Evaluation Harness',
+    description:
+      'A Python-based evaluation framework for testing prompt behavior, scoring model responses, comparing prompt versions, and detecting regressions.',
+    images: ['category_pass_rates.png'],
+    technologies: ['Python'],
+    github: 'https://github.com/code-withrafi/language-model-eval-harness',
+    live: '',
+    featured: true,
+  },
+  {
+    id: 9,
+    title: 'Airline Management System',
+    description:
+      'A hybrid airline management system | PySide6 desktop for admin/staff, React web for passengers, FastAPI backend, PostgreSQL database.',
+    images: [
+      'landing.png',
+      'Flightresult.png',
+      '3flightdetails.png',
+      '4seatselection.png',
+      '5mockpayment.png',
+      '6confirmation.png',
+      '7bookingdetails.png',
+    ],
+    technologies: [
+      'Python',
+      'PySide6',
+      'React',
+      'Framer Motion',
+      'FastAPI',
+      'PostgreSQL',
+      'SQLAlchemy',
+      'ReportLab',
+    ],
+    github: 'https://github.com/code-withrafi/airline-management-system',
+    live: '',
+    featured: true,
+  },
 ];

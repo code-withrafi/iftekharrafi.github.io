@@ -1,36 +1,16 @@
 import { useRef } from 'react';
 import { motion, useInView } from 'framer-motion';
 
-// Section variants for different styles
-const sectionVariants = {
-  default: {
-    background: '',
-    spacing: 'py-24 sm:py-32',
-  },
-  dark: {
-    background: 'bg-[#06151D]',
-    spacing: 'py-24 sm:py-32',
-  },
-  darker: {
-    background: 'bg-[#040e14]',
-    spacing: 'py-24 sm:py-32',
-  },
-  glass: {
-    background: 'bg-white/[0.02] backdrop-blur-sm',
-    spacing: 'py-24 sm:py-32',
-  },
-  gradient: {
-    background: 'bg-gradient-to-b from-transparent via-[#45A9A9]/5 to-transparent',
-    spacing: 'py-24 sm:py-32',
-  },
-  bordered: {
-    background: 'border-y border-white/5',
-    spacing: 'py-24 sm:py-32',
-  },
+const SECTION_VARIANTS = {
+  default: '',
+  dark: 'bg-[#06151D]',
+  darker: 'bg-[#040e14]',
+  glass: 'bg-white/[0.02] backdrop-blur-sm',
+  gradient: 'bg-gradient-to-b from-transparent via-[#45A9A9]/5 to-transparent',
+  bordered: 'border-y border-white/5',
 };
 
-// Spacing variants
-const spacingVariants = {
+const SPACING = {
   none: 'py-0',
   sm: 'py-12 sm:py-16',
   md: 'py-24 sm:py-32',
@@ -38,8 +18,7 @@ const spacingVariants = {
   xl: 'py-40 sm:py-48',
 };
 
-// Container sizes
-const containerSizes = {
+const CONTAINER = {
   sm: 'max-w-3xl',
   md: 'max-w-5xl',
   lg: 'max-w-7xl',
@@ -47,7 +26,36 @@ const containerSizes = {
   full: 'max-w-full',
 };
 
-export default function Section({
+const ANIMATIONS = {
+  fadeUp: {
+    initial: { opacity: 0, y: 60 },
+    animate: { opacity: 1, y: 0 },
+  },
+  fadeIn: {
+    initial: { opacity: 0 },
+    animate: { opacity: 1 },
+  },
+  slideLeft: {
+    initial: { opacity: 0, x: -60 },
+    animate: { opacity: 1, x: 0 },
+  },
+  slideRight: {
+    initial: { opacity: 0, x: 60 },
+    animate: { opacity: 1, x: 0 },
+  },
+  scale: {
+    initial: { opacity: 0, scale: 0.95 },
+    animate: { opacity: 1, scale: 1 },
+  },
+  none: {
+    initial: {},
+    animate: {},
+  },
+};
+
+const cn = (...classes) => classes.filter(Boolean).join(' ');
+
+const Section = ({
   id,
   children,
   className = '',
@@ -60,92 +68,68 @@ export default function Section({
   noContainer = false,
   fullWidth = false,
   ...props
-}) {
+}) => {
   const sectionRef = useRef(null);
-  const isInView = useInView(sectionRef, { once: true, margin: '-100px' });
+  const isInView = useInView(sectionRef, {
+    once: true,
+    margin: '-100px',
+  });
 
-  // Animation variants
-  const animations = {
-    fadeUp: {
-      initial: { opacity: 0, y: 60 },
-      animate: isInView ? { opacity: 1, y: 0 } : {},
-      transition: { duration: 0.8, ease: [0.25, 0.1, 0.25, 1] },
-    },
-    fadeIn: {
-      initial: { opacity: 0 },
-      animate: isInView ? { opacity: 1 } : {},
-      transition: { duration: 0.8, ease: 'easeOut' },
-    },
-    slideLeft: {
-      initial: { opacity: 0, x: -60 },
-      animate: isInView ? { opacity: 1, x: 0 } : {},
-      transition: { duration: 0.8, ease: [0.25, 0.1, 0.25, 1] },
-    },
-    slideRight: {
-      initial: { opacity: 0, x: 60 },
-      animate: isInView ? { opacity: 1, x: 0 } : {},
-      transition: { duration: 0.8, ease: [0.25, 0.1, 0.25, 1] },
-    },
-    scale: {
-      initial: { opacity: 0, scale: 0.95 },
-      animate: isInView ? { opacity: 1, scale: 1 } : {},
-      transition: { duration: 0.8, ease: [0.25, 0.1, 0.25, 1] },
-    },
-    none: {},
-  };
+  const animation = ANIMATIONS[animationVariant] || ANIMATIONS.fadeUp;
 
-  const selectedAnimation = animations[animationVariant] || animations.fadeUp;
-  const selectedVariant = sectionVariants[variant] || sectionVariants.default;
-  const selectedSpacing = spacingVariants[spacing] || spacingVariants.md;
-  const selectedContainer = containerSizes[containerSize] || containerSizes.lg;
-
-  const sectionContent = (
-    <>
-      {noContainer ? (
-        children
-      ) : fullWidth ? (
-        <div className="w-full">{children}</div>
-      ) : (
-        <div className={`mx-auto w-full ${selectedContainer} px-6 sm:px-8 lg:px-12`}>
-          {children}
-        </div>
-      )}
-    </>
+  const sectionClasses = cn(
+    'relative overflow-hidden',
+    SECTION_VARIANTS[variant] || SECTION_VARIANTS.default,
+    SPACING[spacing] || SPACING.md,
+    className,
   );
 
-  if (animated && animationVariant !== 'none') {
-    return (
-      <Component
-        ref={sectionRef}
-        id={id}
-        className={`relative overflow-hidden ${selectedVariant.background} ${selectedSpacing} ${className}`}
-        {...props}
+  const content = noContainer ? (
+    children
+  ) : fullWidth ? (
+    <div className="w-full">{children}</div>
+  ) : (
+    <div
+      className={cn(
+        'mx-auto w-full',
+        CONTAINER[containerSize] || CONTAINER.lg,
+        'px-6 sm:px-8 lg:px-12',
+      )}
+    >
+      {children}
+    </div>
+  );
+
+  const contentWithAnimation =
+    animated && animationVariant !== 'none' ? (
+      <motion.div
+        initial={animation.initial}
+        animate={isInView ? animation.animate : {}}
+        transition={{
+          duration: 0.8,
+          ease: [0.25, 0.1, 0.25, 1],
+        }}
       >
-        <motion.div
-          initial={selectedAnimation.initial}
-          animate={selectedAnimation.animate}
-          transition={selectedAnimation.transition}
-        >
-          {sectionContent}
-        </motion.div>
-      </Component>
+        {content}
+      </motion.div>
+    ) : (
+      content
     );
-  }
 
   return (
     <Component
+      ref={animated ? sectionRef : undefined}
       id={id}
-      className={`relative overflow-hidden ${selectedVariant.background} ${selectedSpacing} ${className}`}
+      className={sectionClasses}
       {...props}
     >
-      {sectionContent}
+      {contentWithAnimation}
     </Component>
   );
-}
+};
 
-// Specialized section components for quick use
+Section.displayName = 'Section';
 
-// Full-bleed section (no padding, no container)
 export function FullBleedSection({ children, className = '', ...props }) {
   return (
     <Section spacing="none" noContainer fullWidth animated={false} className={className} {...props}>
@@ -154,7 +138,6 @@ export function FullBleedSection({ children, className = '', ...props }) {
   );
 }
 
-// Dark section with glass effect
 export function GlassSection({ children, className = '', ...props }) {
   return (
     <Section variant="glass" className={className} {...props}>
@@ -163,7 +146,6 @@ export function GlassSection({ children, className = '', ...props }) {
   );
 }
 
-// Gradient background section
 export function GradientSection({ children, className = '', ...props }) {
   return (
     <Section variant="gradient" className={className} {...props}>
@@ -172,7 +154,6 @@ export function GradientSection({ children, className = '', ...props }) {
   );
 }
 
-// Bordered section with divider lines
 export function BorderedSection({ children, className = '', ...props }) {
   return (
     <Section variant="bordered" className={className} {...props}>
@@ -181,7 +162,6 @@ export function BorderedSection({ children, className = '', ...props }) {
   );
 }
 
-// Narrow content section (blog-style)
 export function NarrowSection({ children, className = '', ...props }) {
   return (
     <Section containerSize="sm" className={className} {...props}>
@@ -190,7 +170,6 @@ export function NarrowSection({ children, className = '', ...props }) {
   );
 }
 
-// Wide section for grids
 export function WideSection({ children, className = '', ...props }) {
   return (
     <Section containerSize="xl" className={className} {...props}>
@@ -199,7 +178,6 @@ export function WideSection({ children, className = '', ...props }) {
   );
 }
 
-// Section with large spacing
 export function SpaciousSection({ children, className = '', ...props }) {
   return (
     <Section spacing="xl" className={className} {...props}>
@@ -208,7 +186,6 @@ export function SpaciousSection({ children, className = '', ...props }) {
   );
 }
 
-// Compact section
 export function CompactSection({ children, className = '', ...props }) {
   return (
     <Section spacing="sm" className={className} {...props}>
@@ -216,3 +193,5 @@ export function CompactSection({ children, className = '', ...props }) {
     </Section>
   );
 }
+
+export default Section;

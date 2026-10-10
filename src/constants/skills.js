@@ -7,5 +7,14 @@ export const skills = {
 
   tools: ['Git', 'GitHub', 'Docker', 'Figma', 'VS Code'],
 
-  ai: ['Python', 'OpenCV', 'Deep Learning', 'LLM APIs', 'Computer Vision'],
+  ai: [
+    'Python',
+    'OpenCV',
+    'Deep Learning',
+    'LLM APIs',
+    'Computer Vision',
+    'Pytorch',
+    'Yolo',
+    'EasyOCR',
+  ],
 };

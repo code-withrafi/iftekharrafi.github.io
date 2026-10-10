@@ -247,8 +247,10 @@ export default function Hero() {
             className="mt-8 max-w-2xl text-lg leading-relaxed text-white/60 sm:text-xl"
           >
             Passionate about{','}
-            <span className="text-[#45A9A9]">Web Development</span>,{' '}
-            <span className="text-[#45A9A9]">Artificial Intelligence </span>, and building digital
+            <span className="text-[#45A9A9]">Artificial Intelligence</span>,{' '}
+            <span className="text-[#45A9A9]">Machine Learning</span>,{' '}
+            <span className="text-[#45A9A9]">Computer Vision</span>,{' '}
+            <span className="text-[#45A9A9]">Web Development</span>, and building digital
             experiences that make a difference.
           </motion.p>
 
