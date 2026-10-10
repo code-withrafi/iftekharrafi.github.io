@@ -1,6 +1,6 @@
 <div align="center">
 
-#  Rafi Portfolio
+# Rafi Portfolio
 
 ### Modern Developer Portfolio built with React, Three.js & Framer Motion
 
@@ -13,9 +13,9 @@ Showcasing my software engineering journey, projects, skills, and experience thr
 
 ---
 
-##  Live Demo
+## Live Demo
 
-> **Website:** *(Add after deployment)*
+> **Website:** _(Add after deployment)_
 
 ```
 https://portfolio-coral-two-g6bednee2s.vercel.app/
@@ -23,23 +23,23 @@ https://portfolio-coral-two-g6bednee2s.vercel.app/
 
 ---
 
-#  Features
+# Features
 
--  Modern Premium UI/UX
--  Interactive 3D Background using React Three Fiber
--  Smooth Animations with Framer Motion
--  Fully Responsive Design
--  Beautiful Glassmorphism Cards
--  Clean Component Architecture
--  Professional Project Showcase
--  Resume Download
--  Contact Section
--  Optimized Production Build
--  Built with Modern React Ecosystem
+- Modern Premium UI/UX
+- Interactive 3D Background using React Three Fiber
+- Smooth Animations with Framer Motion
+- Fully Responsive Design
+- Beautiful Glassmorphism Cards
+- Clean Component Architecture
+- Professional Project Showcase
+- Resume Download
+- Contact Section
+- Optimized Production Build
+- Built with Modern React Ecosystem
 
 ---
 
-#  Tech Stack
+# Tech Stack
 
 ## Frontend
 
@@ -74,7 +74,7 @@ https://portfolio-coral-two-g6bednee2s.vercel.app/
 
 ---
 
-#  Project Structure
+# Project Structure
 
 ```
 src
@@ -107,7 +107,7 @@ src
 
 ---
 
-#  Sections
+# Sections
 
 - Hero
 - About Me
@@ -120,7 +120,7 @@ src
 
 ---
 
-#  Interactive 3D Scene
+# Interactive 3D Scene
 
 The portfolio includes a custom-built Three.js environment featuring:
 
@@ -141,9 +141,9 @@ Built using:
 
 ---
 
-#  Featured Projects
+# Featured Projects
 
-##  Medha AI
+## Medha AI
 
 AI-powered chatbot built with FastAPI and modern React.
 
@@ -157,7 +157,7 @@ AI-powered chatbot built with FastAPI and modern React.
 
 ---
 
-##  SkyCast
+## SkyCast
 
 Beautiful real-time weather application.
 
@@ -171,7 +171,7 @@ Beautiful real-time weather application.
 
 ---
 
-##  EmotionVision
+## EmotionVision
 
 Deep Learning powered facial emotion recognition application.
 
@@ -184,7 +184,7 @@ Deep Learning powered facial emotion recognition application.
 
 ---
 
-##  Rafi Portfolio
+## Rafi Portfolio
 
 This portfolio itself is one of my projects.
 
@@ -198,7 +198,7 @@ Technologies used:
 
 ---
 
-#  Getting Started
+# Getting Started
 
 Clone the repository
 
@@ -238,7 +238,7 @@ npm run preview
 
 ---
 
-#  Available Scripts
+# Available Scripts
 
 ```bash
 npm run dev
@@ -266,7 +266,7 @@ Runs ESLint.
 
 ---
 
-#  Performance
+# Performance
 
 ✔ Optimized Production Build
 
@@ -278,15 +278,13 @@ Runs ESLint.
 
 ✔ Modern Build Pipeline using Vite
 
-
-#  Resume
+# Resume
 
 The latest version of my resume is available directly from the portfolio website.
 
-
 ---
 
-#  Future Improvements
+# Future Improvements
 
 - Blog Integration
 - Dark / Light Theme Switcher
@@ -301,9 +299,9 @@ The latest version of my resume is available directly from the portfolio website
 
 ---
 
-#  Support
+# Support
 
-If you found this project useful, consider giving it a  on GitHub.
+If you found this project useful, consider giving it a on GitHub.
 
 It helps others discover the project and motivates future improvements.
 
@@ -331,6 +329,6 @@ Passionate about
 
 ### Built with Love by Rafi
 
-*"Transforming ideas into intelligent digital experiences."*
+_"Transforming ideas into intelligent digital experiences."_
 
 </div>

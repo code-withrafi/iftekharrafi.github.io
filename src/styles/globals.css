@@ -13,101 +13,97 @@
 @import './animations.css';
 @import './utilities.css';
 
+/* ========================================
+   THEME CONFIGURATION
+======================================== */
+
 @theme {
   --color-bg-primary: #1b3c53;
-
   --color-bg-secondary: #234c6a;
-
   --color-bg-tertiary: #456882;
-
   --color-card: #352f44;
 
   --color-text-primary: #d3dad9;
-
   --color-text-secondary: #e0d9d9;
-
   --color-text-highlight: #fff7eb;
 
   --color-light-bg: #9aa6b2;
-
   --color-light-card: #bcccdc;
-
   --color-light-accent: #8d77ab;
 
   --font-heading: 'Space Grotesk', sans-serif;
-
   --font-body: 'Inter', sans-serif;
 }
 
+/* ========================================
+   ROOT SETTINGS
+======================================== */
+
 :root {
   font-family: var(--font-body);
-
   font-synthesis: none;
-
   text-rendering: optimizeLegibility;
-
   -webkit-font-smoothing: antialiased;
-
+  -moz-osx-font-smoothing: grayscale;
   text-size-adjust: 100%;
 }
 
-* {
-  margin: 0;
+/* ========================================
+   GLOBAL BASE STYLES
 
-  padding: 0;
+   Tailwind CSS v4 Preflight already handles
+   universal margin, padding, and box sizing.
+   Avoid an unlayered * reset here because it
+   can override Tailwind utility classes.
+======================================== */
 
-  box-sizing: border-box;
-}
+@layer base {
+  html {
+    min-width: 320px;
+    min-height: 100%;
+    scroll-behavior: smooth;
+    background: #0f3040;
+  }
 
-html {
-  scroll-behavior: smooth;
+  body {
+    min-width: 320px;
+    min-height: 100vh;
+    overflow-x: hidden;
+    background: var(--color-bg-primary);
+    color: var(--color-text-primary);
+    font-family: var(--font-body);
+  }
 
-  background: #0f3040;
-}
+  h1,
+  h2,
+  h3,
+  h4,
+  h5,
+  h6 {
+    font-family: var(--font-heading);
+  }
 
-body {
-  min-width: 320px;
+  p {
+    font-family: var(--font-body);
+  }
 
-  min-height: 100vh;
+  button {
+    font-family: inherit;
+  }
 
-  overflow-x: hidden;
+  img,
+  canvas {
+    display: block;
+    max-width: 100%;
+  }
 
-  background: var(--color-bg-primary);
+  button,
+  a {
+    cursor: pointer;
+  }
 
-  color: var(--color-text-primary);
-}
-
-h1,
-h2,
-h3,
-h4,
-h5,
-h6 {
-  font-family: var(--font-heading);
-}
-
-p {
-  font-family: var(--font-body);
-}
-
-img,
-canvas {
-  display: block;
-
-  max-width: 100%;
-}
-
-button,
-a {
-  cursor: pointer;
-}
-
-button {
-  font-family: inherit;
-}
-
-::selection {
-  background: rgba(69, 169, 169, 0.45);
-
-  color: #ffffff;
+  ::selection {
+    background: rgba(69, 169, 169, 0.45);
+    color: #ffffff;
+  }
 }

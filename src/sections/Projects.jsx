@@ -34,7 +34,8 @@ const imageImports = {
   'disease_prediction_threshold_analysis.png': () =>
     import('@/assets/images/projects/disease_prediction_threshold_analysis.png'),
   'handwriting_loss_curve.png': () => import('@/assets/images/projects/handwriting_loss_curve.png'),
-  'handwriting_accuracy_curve.png': () => import('@/assets/images/projects/handwriting_accuracy_curve.png'),
+  'handwriting_accuracy_curve.png': () =>
+    import('@/assets/images/projects/handwriting_accuracy_curve.png'),
   'category_pass_rates.png': () => import('@/assets/images/projects/category_pass_rates.png'),
   'landing.png': () => import('@/assets/images/projects/landing.png'),
   'Flightresult.png': () => import('@/assets/images/projects/Flightresult.png'),
@@ -97,7 +98,8 @@ function getProjectImages(title) {
       '4seatselection.png',
       '5mockpayment.png',
       '6confirmation.png',
-      '7bookingdetails.png'];
+      '7bookingdetails.png',
+    ];
   }
 
   // Default fallback
@@ -471,7 +473,7 @@ export default function Projects() {
   const remainingProjects = useMemo(() => filteredProjects.slice(1), [filteredProjects]);
 
   return (
-    <section id="projects" className="relative overflow-hidden py-20 sm:py-28">
+    <section id="projects" className="relative overflow-hidden py-16 sm:py-20">
       <div className="relative z-10 mx-auto max-w-7xl px-6 sm:px-8 lg:px-12">
         {/* Section Title */}
         <SectionTitle

@@ -260,7 +260,7 @@ export default function ProjectCard({ project, index = 0 }) {
         }`}
       />
 
-      <div className="relative flex h-full flex-col rounded-3xl border border-white/5 bg-white/[0.02] p-6 backdrop-blur-sm transition-all duration-500 group-hover:-translate-y-2 group-hover:border-[#45A9A9]/20 group-hover:bg-white/[0.04] sm:p-8">
+      <div className="relative flex h-full flex-col rounded-2xl border border-white/5 bg-white/[0.02] p-5 backdrop-blur-sm transition-all duration-500 group-hover:-translate-y-1 group-hover:border-[#45A9A9]/20 group-hover:bg-white/[0.04] sm:p-6">
         {/* Header */}
         <div className="mb-6 flex items-start justify-between">
           <motion.div
@@ -305,7 +305,7 @@ export default function ProjectCard({ project, index = 0 }) {
 
         {/* Content */}
         <div className="flex-1 space-y-4">
-          <h3 className="text-xl font-bold text-white transition-colors duration-300 group-hover:text-[#45A9A9] sm:text-2xl">
+          <h3 className="text-lg font-bold text-white transition-colors duration-300 group-hover:text-[#45A9A9] sm:text-xl">
             {project.title}
           </h3>
 

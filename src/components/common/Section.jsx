@@ -12,10 +12,10 @@ const SECTION_VARIANTS = {
 
 const SPACING = {
   none: 'py-0',
-  sm: 'py-12 sm:py-16',
-  md: 'py-24 sm:py-32',
-  lg: 'py-32 sm:py-40',
-  xl: 'py-40 sm:py-48',
+  sm: 'py-8 sm:py-10 lg:py-12',
+  md: 'py-10 sm:py-14 lg:py-16',
+  lg: 'py-12 sm:py-16 lg:py-20',
+  xl: 'py-16 sm:py-20 lg:py-24',
 };
 
 const CONTAINER = {
@@ -26,9 +26,16 @@ const CONTAINER = {
   full: 'max-w-full',
 };
 
+const CONTAINER_PADDING = {
+  none: 'px-0',
+  sm: 'px-4 sm:px-6 lg:px-8',
+  md: 'px-4 sm:px-6 lg:px-8 xl:px-10',
+  lg: 'px-5 sm:px-8 lg:px-10 xl:px-12',
+};
+
 const ANIMATIONS = {
   fadeUp: {
-    initial: { opacity: 0, y: 60 },
+    initial: { opacity: 0, y: 40 },
     animate: { opacity: 1, y: 0 },
   },
   fadeIn: {
@@ -36,15 +43,15 @@ const ANIMATIONS = {
     animate: { opacity: 1 },
   },
   slideLeft: {
-    initial: { opacity: 0, x: -60 },
+    initial: { opacity: 0, x: -40 },
     animate: { opacity: 1, x: 0 },
   },
   slideRight: {
-    initial: { opacity: 0, x: 60 },
+    initial: { opacity: 0, x: 40 },
     animate: { opacity: 1, x: 0 },
   },
   scale: {
-    initial: { opacity: 0, scale: 0.95 },
+    initial: { opacity: 0, scale: 0.97 },
     animate: { opacity: 1, scale: 1 },
   },
   none: {
@@ -62,6 +69,7 @@ const Section = ({
   variant = 'default',
   spacing = 'md',
   containerSize = 'lg',
+  containerPadding = 'md',
   animated = true,
   animationVariant = 'fadeUp',
   as: Component = 'section',
@@ -70,15 +78,17 @@ const Section = ({
   ...props
 }) => {
   const sectionRef = useRef(null);
+
   const isInView = useInView(sectionRef, {
     once: true,
-    margin: '-100px',
+    margin: '-80px',
   });
 
   const animation = ANIMATIONS[animationVariant] || ANIMATIONS.fadeUp;
 
   const sectionClasses = cn(
-    'relative overflow-hidden',
+    'relative isolate w-full min-w-0',
+    'box-border',
     SECTION_VARIANTS[variant] || SECTION_VARIANTS.default,
     SPACING[spacing] || SPACING.md,
     className,
@@ -86,14 +96,13 @@ const Section = ({
 
   const content = noContainer ? (
     children
-  ) : fullWidth ? (
-    <div className="w-full">{children}</div>
   ) : (
     <div
       className={cn(
-        'mx-auto w-full',
+        'mx-auto w-full min-w-0',
+        'box-border',
         CONTAINER[containerSize] || CONTAINER.lg,
-        'px-6 sm:px-8 lg:px-12',
+        !fullWidth && (CONTAINER_PADDING[containerPadding] || CONTAINER_PADDING.md),
       )}
     >
       {children}
@@ -106,9 +115,10 @@ const Section = ({
         initial={animation.initial}
         animate={isInView ? animation.animate : {}}
         transition={{
-          duration: 0.8,
+          duration: 0.7,
           ease: [0.25, 0.1, 0.25, 1],
         }}
+        className="w-full min-w-0"
       >
         {content}
       </motion.div>

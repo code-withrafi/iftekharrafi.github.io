@@ -309,7 +309,7 @@ export default function Education() {
   });
 
   return (
-    <section id="education" className="relative overflow-hidden py-24 sm:py-32">
+    <section id="education" className="relative overflow-hidden py-16 sm:py-20">
       <div className="relative z-10 mx-auto max-w-7xl px-6 sm:px-8 lg:px-12">
         {/* Section Title */}
         <div className="text-center">

@@ -17,40 +17,45 @@ export default function App() {
   return (
     <MainLayout>
       {/* 3D Background */}
-      <div className="fixed inset-0 -z-20 h-screen w-screen">
-        <Scene />
+      <div className="pointer-events-none fixed inset-0 -z-20 overflow-hidden">
+        <div className="absolute inset-0">
+          <Scene />
+        </div>
       </div>
 
       {/* Dark Overlay */}
-      <div className="fixed inset-0 -z-10 h-screen w-screen bg-[#06151D]/75" />
+      <div className="pointer-events-none fixed inset-0 -z-10 bg-[#06151D]/75" />
 
       {/* Page Content */}
-      <div className="relative z-10 flex w-full flex-col items-center">
-        {/* Hero Section - independently aligned */}
-        <div className="w-full -translate-x-3 sm:-translate-x-4 lg:-translate-x-6">
+      <main className="relative z-10 flex w-full min-w-0 flex-col items-stretch overflow-x-clip">
+        <section className="w-full min-w-0">
           <Hero />
-        </div>
+        </section>
 
-        {/* About Section - original alignment */}
-        <About />
+        <section className="w-full min-w-0">
+          <About />
+        </section>
 
-        {/* Skills Section - original alignment */}
-        <Skills />
+        <section className="w-full min-w-0">
+          <Skills />
+        </section>
 
-        {/* Projects Section - original alignment */}
-        <Projects />
+        <section className="w-full min-w-0">
+          <Projects />
+        </section>
 
-        {/* Experience Section - original alignment */}
-        <Experience />
+        <section className="w-full min-w-0">
+          <Experience />
+        </section>
 
-        {/* Education Section - original alignment */}
-        <Education />
+        <section className="w-full min-w-0">
+          <Education />
+        </section>
 
-        {/* Contact Section - independently aligned */}
-        <div className="w-full">
+        <section className="w-full min-w-0">
           <Contact />
-        </div>
-      </div>
+        </section>
+      </main>
     </MainLayout>
   );
 }

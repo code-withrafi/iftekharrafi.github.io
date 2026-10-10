@@ -148,7 +148,7 @@ export default function About() {
   const sectionRef = useRef(null);
 
   return (
-    <section ref={sectionRef} id="about" className="relative overflow-hidden py-20 sm:py-28">
+    <section ref={sectionRef} id="about" className="relative overflow-hidden py-16 sm:py-20">
       {/* Decorative elements */}
       <DecorativeElements />
 

@@ -1,20 +1,15 @@
 export const skills = {
-  frontend: ['React', 'JavaScript', 'TypeScript', 'HTML', 'CSS', 'Tailwind CSS'],
+  Frontend: ['React', 'JavaScript', 'TypeScript', 'HTML', 'CSS', 'Tailwind CSS'],
 
-  backend: ['Node.js', 'Express.js', 'FastAPI', 'REST API'],
+  Backend: ['Node.js', 'Express.js', 'FastAPI', 'REST API'],
 
-  database: ['MongoDB', 'PostgreSQL', 'MySQL'],
+  Database: ['MongoDB', 'PostgreSQL', 'MySQL'],
 
-  tools: ['Git', 'GitHub', 'Docker', 'Figma', 'VS Code'],
+  'AI/ML': ['Python', 'Deep Learning', 'Computer Vision', 'YOLO'],
 
-  ai: [
-    'Python',
-    'OpenCV',
-    'Deep Learning',
-    'LLM APIs',
-    'Computer Vision',
-    'Pytorch',
-    'Yolo',
-    'EasyOCR',
-  ],
+  'Frameworks & Libraries': ['OpenCV', 'PyTorch', 'EasyOCR'],
+
+  'Generative AI': ['LLM APIs'],
+
+  Tools: ['Git', 'GitHub', 'Docker', 'Figma', 'VS Code'],
 };

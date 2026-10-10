@@ -13,8 +13,8 @@ const SIZE = {
 const PADDING = {
   none: 'px-0',
   sm: 'px-4 sm:px-6 lg:px-8',
-  md: 'px-6 sm:px-8 lg:px-12',
-  lg: 'px-8 sm:px-12 lg:px-16',
+  md: 'px-4 sm:px-6 lg:px-8 xl:px-10',
+  lg: 'px-5 sm:px-8 lg:px-10 xl:px-12',
 };
 
 const ANIMATIONS = {
@@ -58,9 +58,9 @@ const GRID_COLS = {
 const GAPS = {
   none: 'gap-0',
   sm: 'gap-4',
-  md: 'gap-6 lg:gap-8',
-  lg: 'gap-8 lg:gap-12',
-  xl: 'gap-12 lg:gap-16',
+  md: 'gap-5 sm:gap-6 lg:gap-8',
+  lg: 'gap-6 sm:gap-8 lg:gap-10',
+  xl: 'gap-8 sm:gap-10 lg:gap-12',
 };
 
 const FLEX_DIRECTION = {
@@ -89,10 +89,10 @@ const JUSTIFY = {
 
 const FLEX_GAPS = {
   none: 'gap-0',
-  sm: 'gap-2 sm:gap-4',
-  md: 'gap-4 sm:gap-6',
-  lg: 'gap-6 sm:gap-8 lg:gap-10',
-  xl: 'gap-8 sm:gap-12 lg:gap-16',
+  sm: 'gap-2 sm:gap-3',
+  md: 'gap-3 sm:gap-4 lg:gap-5',
+  lg: 'gap-4 sm:gap-6 lg:gap-8',
+  xl: 'gap-6 sm:gap-8 lg:gap-10',
 };
 
 const cn = (...classes) => classes.filter(Boolean).join(' ');
@@ -118,7 +118,7 @@ const Container = forwardRef(function Container(
   const animation = ANIMATIONS[animationVariant] || ANIMATIONS.fadeUp;
 
   const classes = cn(
-    'mx-auto w-full',
+    'mx-auto w-full min-w-0',
     SIZE[size] || SIZE.lg,
     !noGutter && (PADDING[padding] || PADDING.md),
     centered && 'flex flex-col items-center text-center',
@@ -155,6 +155,10 @@ const Container = forwardRef(function Container(
 
 Container.displayName = 'Container';
 
+/**
+ * Reusable section wrapper.
+ * Controls vertical section spacing and background styling.
+ */
 export function Section({
   children,
   className = '',
@@ -172,15 +176,20 @@ export function Section({
 
   const spacingMap = {
     none: 'py-0',
-    sm: 'py-8 sm:py-12',
-    md: 'py-12 sm:py-16',
-    lg: 'py-16 sm:py-20 lg:py-24',
-    xl: 'py-20 sm:py-24 lg:py-32',
+    sm: 'py-8 sm:py-10 lg:py-12',
+    md: 'py-10 sm:py-12 lg:py-16',
+    lg: 'py-12 sm:py-16 lg:py-20',
+    xl: 'py-16 sm:py-20 lg:py-24',
   };
 
   return (
     <section
-      className={cn(spacingMap[spacing] || spacingMap.lg, backgrounds[background], className)}
+      className={cn(
+        'relative w-full min-w-0',
+        spacingMap[spacing] || spacingMap.lg,
+        backgrounds[background],
+        className,
+      )}
       {...props}
     >
       {children}
@@ -188,10 +197,18 @@ export function Section({
   );
 }
 
+/**
+ * Responsive grid layout.
+ */
 export function Grid({ children, className = '', cols = 3, gap = 'md', ...props }) {
   return (
     <div
-      className={cn('grid', GRID_COLS[cols] || GRID_COLS[3], GAPS[gap] || GAPS.md, className)}
+      className={cn(
+        'grid w-full min-w-0',
+        GRID_COLS[cols] || GRID_COLS[3],
+        GAPS[gap] || GAPS.md,
+        className,
+      )}
       {...props}
     >
       {children}
@@ -199,6 +216,9 @@ export function Grid({ children, className = '', cols = 3, gap = 'md', ...props 
   );
 }
 
+/**
+ * Flexible row or column layout.
+ */
 export function Flex({
   children,
   className = '',
@@ -212,7 +232,7 @@ export function Flex({
   return (
     <div
       className={cn(
-        'flex',
+        'flex min-w-0',
         FLEX_DIRECTION[direction] || FLEX_DIRECTION.row,
         ALIGN[align] || ALIGN.center,
         JUSTIFY[justify] || JUSTIFY.between,
